@@ -18,7 +18,7 @@ Ottawa-Covid19-Tracker-Dashboard
 
 Overview
 ========
-Flexdashboard for displaying stats about Ottawa's covid19 pandemic response provincially and regionally. 
+Flexdashboard for displaying stats about Ottawa's covid19 pandemic response. 
 
 Setup
 =====
