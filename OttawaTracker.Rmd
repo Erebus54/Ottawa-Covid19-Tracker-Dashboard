@@ -640,14 +640,17 @@ Demographics
 ages <- TargetPHU %>% 
   dplyr::group_by(Age_Group) %>% 
   dplyr::summarise(n = n()) %>% 
-  data.frame()
+  dplyr::ungroup() %>% 
+  data.frame() 
+
 
 #breakdown by gender 
 genders <- TargetPHU %>% 
+  dplyr::filter(Client_Gender == "MALE" | Client_Gender == "FEMALE") %>% 
   dplyr::group_by(Client_Gender) %>% 
   dplyr::summarise(n = n()) %>% 
   data.frame() %>% 
-  dplyr::filter(!Client_Gender == "")
+  dplyr::ungroup()
 ```
 
 Row {.tabset .tabset-fade}
@@ -735,7 +738,8 @@ plot_ly(daily_ages,
 ```{r csumbyAge}
 daily_ages <- daily_ages %>% 
   dplyr::group_by(Age_Group) %>% 
-  dplyr::mutate(csum = cumsum(n))
+  dplyr::mutate(csum = cumsum(n)) %>% 
+  dplyr::ungroup()
 
 plot_ly(daily_ages, x = ~Case_Reported_Date, y = ~csum, 
         type = 'scatter', mode = 'lines', fill = 'tozeroy', 
