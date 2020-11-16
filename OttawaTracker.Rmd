@@ -181,7 +181,8 @@ Row {.tabset .tabset-fade}
 dailyPHU <- data.frame(TargetPHU %>% 
   dplyr::arrange(Case_Reported_Date) %>% 
   dplyr::group_by(Case_Reported_Date) %>% 
-  dplyr::count(name = "Cases") 
+  dplyr::count(name = "Cases") %>% 
+  dplyr::ungroup()
 )
 
 dailyPHU <- dailyPHU %>% 
@@ -327,8 +328,9 @@ Outcomes
 ```{r}
 outcomes <- TargetPHU %>% 
   dplyr::select(Row_ID,Case_Reported_Date, Outcome1) %>% 
-  group_by(Case_Reported_Date, Outcome1) %>% 
-  summarise(count = n()) %>% 
+  dplyr::group_by(Case_Reported_Date, Outcome1) %>% 
+  dplyr::summarise(count = n(), .groups = 'keep') %>% 
+  dplyr::ungroup() %>% 
   spread(Outcome1, count, fill = 0) %>% 
   as.data.frame()
 
@@ -555,8 +557,9 @@ acq_daily <- TargetPHU %>%
   dplyr::filter(Case_AcquisitionInfo != "No Info-Missing") %>% 
   dplyr::filter(Case_AcquisitionInfo != "No Info-Unk") %>% 
   dplyr::select(Row_ID,Case_Reported_Date, Case_AcquisitionInfo) %>% 
-  group_by(Case_Reported_Date, Case_AcquisitionInfo) %>% 
-  summarise(count = n()) %>% 
+  dplyr::group_by(Case_Reported_Date, Case_AcquisitionInfo) %>% 
+  dplyr::summarise(count = n(), .groups = 'keep') %>% 
+  dplyr::ungroup() %>% 
   spread(Case_AcquisitionInfo, count, fill = 0) %>% 
   as.data.frame()
 
@@ -604,8 +607,8 @@ cacot <- TargetPHU %>%
   dplyr::filter(Case_AcquisitionInfo != "No Info-Missing") %>% 
   dplyr::filter(Case_AcquisitionInfo != "No Info-Unk") %>% 
   dplyr::select(Row_ID,Case_Reported_Date, Case_AcquisitionInfo) %>% 
-  group_by(Case_Reported_Date, Case_AcquisitionInfo) %>% 
-  summarise(count = n()) %>% 
+  dplyr::group_by(Case_Reported_Date, Case_AcquisitionInfo) %>% 
+  dplyr::summarise(count = n(), .groups = 'keep') %>% 
   spread(Case_AcquisitionInfo, count, fill = 0) %>% 
   as.data.frame() 
 
@@ -688,10 +691,11 @@ plot_ly(acq_daily, x = ~Case_Reported_Date, y = ~OB_csum, type = 'scatter', mode
 ```{r}
 acq_daily <- TargetPHU %>% 
   dplyr::select(Row_ID,Case_Reported_Date, Case_AcquisitionInfo) %>% 
-  group_by(Case_Reported_Date, Case_AcquisitionInfo) %>% 
-  summarise(count = n()) %>% 
+  dplyr::group_by(Case_Reported_Date, Case_AcquisitionInfo) %>% 
+  dplyr::summarise(count = n(), .groups = 'keep') %>% 
   dplyr::ungroup() %>% 
   as.data.frame()
+
 acq_daily$Case_AcquisitionInfo <- factor(acq_daily$Case_AcquisitionInfo, 
                                       levels = unique(acq_daily$Case_AcquisitionInfo)[order(acq_daily$count, decreasing = T)])
 plot_ly(data = acq_daily, 
