@@ -206,11 +206,6 @@ TargetPHU %>%
          paper_bgcolor='transparent')
 ```
 
-### <b> Positive cases per capita </b> 
-```{r}
-
-```
-
 
 ### <b> The Curve - Linear Scale </b>
 
