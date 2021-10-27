@@ -47,16 +47,24 @@ library(lubridate)
 library(zoo)
 library(data.table)
 library(plotly)
-casestatus <- fread("./datasets/casestatus.csv", encoding = 'UTF-8',data.table = F)
+```
+
+```{r src, include=FALSE}
+source("./DataDownloader.R")
+```
+
+```{r}
+casestatus <- readRDS("datasets/casestatus.rds")
 casestatus$Reporting_PHU <- trimws(casestatus$Reporting_PHU)
 casestatus$Case_AcquisitionInfo <- trimws(casestatus$Case_AcquisitionInfo)
+
 #converting dates into proper formats 
 casestatus$Accurate_Episode_Date <- as.Date(casestatus$Accurate_Episode_Date, format = "%Y-%m-%d")
 casestatus$Case_Reported_Date <- as.Date(casestatus$Case_Reported_Date, format = "%Y-%m-%d")
 casestatus$Test_Reported_Date <- as.Date(casestatus$Test_Reported_Date, format = "%Y-%m-%d")
+
 TargetPHU <- casestatus 
 ```
-
 
 ```{r}
 ##adding a range selector variable to supply list of options for our time series graphs into buttons_time
